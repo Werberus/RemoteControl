@@ -1,7 +1,7 @@
 import com.jcraft.jsch.*;
 import java.io.InputStream;
 
-class testConnectionSSH {
+class testConnectionSSH extends Thread {
     private String username;
     private String host;
     private int port;
@@ -11,6 +11,11 @@ class testConnectionSSH {
         this.host = host;
         this.port = port;
         this.password = password;
+        Thread t = new Thread(this, host);
+        t.start();
+    }
+
+    public void run() {
         executeSSH();
     }
 
@@ -42,7 +47,7 @@ class testConnectionSSH {
                     }
                     if (channel.isClosed()) {
                         if (in.available() > 0) continue;
-                        System.out.println("exit-status: " + channel.getExitStatus());
+                        System.out.println(host + "exit-status: " + channel.getExitStatus());
                         break;
                     }
                     try {
@@ -60,6 +65,6 @@ class testConnectionSSH {
     }
 
     private String[] commands() {
-        return new String[]{"mkdir -p /root/1/2/3/4/5", "echo test > /test111", "echo test2 > /test123"};
+        return new String[]{"echo test > ~/test111", "echo test2 > ~/test123", "echo test2 > ~/test123", "echo test2 > ~/test123", "echo test2 > ~/test123", "echo test2 > ~/test123", "echo test2 > ~/test123", "echo test2 > ~/test123", "echo test2 > ~/test123", "echo test2 > ~/test123", "echo test2 > ~/test123", "echo test2 > ~/test123", "echo test2 > ~/test123", "echo test2 > ~/test123", "echo test2 > ~/test123"};
     }
 }
