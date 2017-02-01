@@ -1,12 +1,12 @@
 import com.jcraft.jsch.*;
 import java.io.InputStream;
 
-class testConnectionSSH extends Thread {
+class ConnectionSSH extends Thread {
     private String username;
     private String host;
     private int port;
     private String password; // шифровать?
-    testConnectionSSH(String username, String host, int port, String password) {
+    ConnectionSSH(String username, String host, int port, String password) {
         this.username = username;
         this.host = host;
         this.port = port;
