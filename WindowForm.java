@@ -9,6 +9,9 @@ class WindowForm extends JFrame {
         setPreferredSize(new Dimension(800,600));
         setLocationRelativeTo(null);
         pack();
+
+        // создать 2 панели: левая - дерево, правая - рабочая область, хз еще, что там будет :D
+
         add(MyJTree());
     }
 
