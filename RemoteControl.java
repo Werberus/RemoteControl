@@ -11,8 +11,6 @@ public class RemoteControl extends JPanel {
     private final String[] folders = new String[]  {"МР Дальний Восток", "МР Приволжье", "МР Северо-Запад", "МР Сибирь", "МР Урал", "МР Центр", "МР Юг"};
     private final String[][] elements = new String[][]{{"Благовещенск", "Бурятия", "Владивосток", "Иркутск", "Комсомольск-на-Амуре", "Петропавловск-Камчатский", "Чита"}, {"Арзамас", "Балаково", "Ижевск", "Казань", "Киров", "Марий-Эл", "Нижний Новгород", "Оренбург", "Пенза",  "Самара", "Саратов", "Ульяновск", "Уфа"}, {"Великий Новгород", "Вологда", "Коряжма", "Мирный",  "Санкт-Петербург", "Северодвинск"}, {"Барнаул", "Кемерово", "Новокузнецк", "Новосибирск", "Норильск", "Омск"}, {"Екатеринбург", "Курган", "Пермь", "Тюмень", "ХМАО", "Челябинск", "ЯНАО"}, {"Белгород", "Владимир", "Воронеж", "Иваново", "Калуга", "Курск", "Орел", "Рязань", "Смоленск",  "Тамбов", "Тверь", "Тула", "Ярославль"}, {"Волгоград", "Краснодар", "Ростов"}};
 
-    JLabel test = new JLabel("SomeText");
-
     private RemoteControl() {
         super(new GridLayout(1, 2));
         TreeModel model = createTreeModel();
@@ -37,22 +35,20 @@ public class RemoteControl extends JPanel {
         tree.expandRow(0);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         add(new JScrollPane(tree));
+        // test
+        JLabel test = new JLabel("SomeText");
         add(new JScrollPane(test));
+        test.setText("OLOLO AZAZA");
         setPreferredSize(new Dimension(320, 240));
     }
 
 
 
     public static void main(String args[]) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                CreateAndShowGUI();
-            }
-        });
+        SwingUtilities.invokeLater(RemoteControl::CreateAndShowGUI);
     }
 
-    public static void CreateAndShowGUI() {
+    private static void CreateAndShowGUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException

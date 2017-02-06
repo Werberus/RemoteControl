@@ -1,9 +1,9 @@
 package TreeCheckBoxes;
 
 public class CheckBoxNode {
-    public final String label;
-    public final Status status;
-    public CheckBoxNode(String label) {
+    final String label;
+    final Status status;
+    CheckBoxNode(String label) {
         this.label = label;
         status = Status.INDETERMINATE;
     }

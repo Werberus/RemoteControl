@@ -70,7 +70,6 @@ public class CheckBoxStatusUpdateListener implements TreeModelListener {
             }
             CheckBoxNode check = (CheckBoxNode) node.getUserObject();
             node.setUserObject(new CheckBoxNode(check.label, status));
-            System.out.println(status);
         }
     }
     @Override public void treeNodesInserted(TreeModelEvent e)    { /* not needed */ }
