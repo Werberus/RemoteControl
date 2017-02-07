@@ -15,17 +15,16 @@ import java.util.ArrayList;
 
 public class ConfigReader {
     public String getRoot() throws FileNotFoundException { // возвращает из конфига имя корня дерева
-        String root = "";
+        String root = "root"; // значение по умолчанию
         StringBuilder stringBuilder = new StringBuilder();
         checkConfigExist("config\\rc.conf");
         try {
             BufferedReader reader = new BufferedReader(new FileReader(new File("config\\rc.conf").getAbsoluteFile()));
             try {
-                while (!(root = reader.readLine()).matches("^root.*")) { // пока в конфиге не встретили строку root = блабла, переходим на след. строку
+                while (!(root = reader.readLine()).matches("^<root.*")) { // пока в конфиге не встретили строку root = блабла, переходим на след. строку
                     stringBuilder.append("\n");
                 }
-                System.out.print(root.substring(7)); //печатаем имя корневой ветки с 8 символа - пропускаем "root = "
-
+                //System.out.print(root.substring(8, root.length() - 1)); //печатаем имя корневой ветки с 8 символа - пропускаем "root = "
             } finally {
                 reader.close();
             }
@@ -36,31 +35,24 @@ public class ConfigReader {
     }
 
     public String[] getFolders() throws FileNotFoundException { // возвращает из конфига имена ветвей
-        ArrayList<String> test = new ArrayList<String>();
-
+        ArrayList<String> foldersArray = new ArrayList<String>();
         StringBuilder stringBuilder = new StringBuilder();
         checkConfigExist("config\\rc.conf");
         try {
             BufferedReader reader = new BufferedReader(new FileReader(new File("config\\rc.conf").getAbsoluteFile()));
             try {
-                //пропустить пустые строки конфига
                 String s;
-                while ((s = reader.readLine()).equals("")) {
-                    stringBuilder.append("\n");
-                }
-                if (s.charAt(0) == '[') { // пропустить [global]
-                    stringBuilder.append("\n");
-                }
-                while (!(s = reader.readLine()).matches("^\\[.*")) {
-                    if (s.matches("^folder.*")) {
-                        test.add(s.substring(9));
-                        stringBuilder.append("\n");
+                //читаем весь файл, если встречаем .*<folder = , то запихиваем в arraylist то, что после =
+                while ((s = reader.readLine()) != null) {
+                    if (s.matches(".*<folder = .*")) {
+                        foldersArray.add(s.substring(14, s.length() - 1));
                     }
                 }
                 // запихнуть arraylist  в string[]
-                String folders[] = new String[test.size()];
-                for (int i = 0; i < test.size(); i++) {
-                    folders[i] = test.get(i);
+                String folders[] = new String[foldersArray.size()];
+                for (int i = 0; i < foldersArray.size(); i++) {
+                    folders[i] = foldersArray.get(i);
+                    System.out.println(folders[i]);
                 }
                 return folders;
             } finally {
@@ -71,6 +63,10 @@ public class ConfigReader {
             return null;
         }
     }
+    
+    /*public String[][] getNodes() throws FileNotFoundException {
+        
+    }*/
 
     private static String read(String fileName) throws FileNotFoundException {
         StringBuilder sb = new StringBuilder(); //Этот спец. объект для построения строки
@@ -100,12 +96,13 @@ public class ConfigReader {
         }
     }
 
-    //public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws FileNotFoundException {
         //Чтение файла
         /*String fileName = "config\\rc.conf";
         String textFromFile = ConfigReader.read(fileName);
         System.out.println(textFromFile);*/
 
-
-    //}
+        //getRoot();
+        //getFolders();
+    }
 }

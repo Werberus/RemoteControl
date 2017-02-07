@@ -1,18 +1,23 @@
+package testFeatures;
+
 import TreeCheckBoxes.*;
 
 import java.awt.*;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Objects;
 import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.border.Border;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
 
-public class RemoteControl extends JPanel {
-    // TODO - получать эти данные из конфига - раз, запихиваит эти данные в конфиг через ГУИ - два
+public class TestFrame {
+
     private final String root = "Российская Федерация";
     private final String[] folders = new String[]  {"МР Дальний Восток", "МР Приволжье", "МР Северо-Запад", "МР Сибирь", "МР Урал", "МР Центр", "МР Юг"};
     private final String[][] elements = new String[][]{{"Благовещенск", "Бурятия", "Владивосток", "Иркутск", "Комсомольск-на-Амуре", "Петропавловск-Камчатский", "Чита"}, {"Арзамас", "Балаково", "Ижевск", "Казань", "Киров", "Марий-Эл", "Нижний Новгород", "Оренбург", "Пенза",  "Самара", "Саратов", "Ульяновск", "Уфа"}, {"Великий Новгород", "Вологда", "Коряжма", "Мирный",  "Санкт-Петербург", "Северодвинск"}, {"Барнаул", "Кемерово", "Новокузнецк", "Новосибирск", "Норильск", "Омск"}, {"Екатеринбург", "Курган", "Пермь", "Тюмень", "ХМАО", "Челябинск", "ЯНАО"}, {"Белгород", "Владимир", "Воронеж", "Иваново", "Калуга", "Курск", "Орел", "Рязань", "Смоленск",  "Тамбов", "Тверь", "Тула", "Ярославль"}, {"Волгоград", "Краснодар", "Ростов"}};
 
-    private RemoteControl() {
-        super(new GridLayout(1, 2));
+    private JTree testTreeOnPanel() {
         TreeModel model = createTreeModel();
         JTree tree = new JTree(model) {
             @Override public void updateUI() {
@@ -33,19 +38,11 @@ public class RemoteControl extends JPanel {
         tree.setEditable(true);
         tree.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
         tree.expandRow(0);
-        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        add(new JScrollPane(tree));
-        // test
-        JLabel test = new JLabel("SomeText");
-        add(new JScrollPane(test));
-        test.setText("OLOLO AZAZA");
-        setPreferredSize(new Dimension(320, 240));
+        return tree;
     }
 
-
-
     public static void main(String args[]) {
-        SwingUtilities.invokeLater(RemoteControl::CreateAndShowGUI);
+        SwingUtilities.invokeLater(TestFrame::CreateAndShowGUI);
     }
 
     private static void CreateAndShowGUI() {
@@ -57,12 +54,30 @@ public class RemoteControl extends JPanel {
         }
         JFrame frame = new JFrame("@title@");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        //frame.getContentPane().add(new RemoteControl());
-        frame.setContentPane(new RemoteControl());
+
+        JPanel mainPanel = new JPanel(new BorderLayout()); // главный панель с бордер-менеджером
+
+        JPanel northPanel = new JPanel(); // северный панель
+        Border northBorder = BorderFactory.createTitledBorder("NORTH panel");
+        northPanel.setBorder(northBorder);
+        northPanel.add(new JLabel(""));
+        mainPanel.add(northPanel, BorderLayout.NORTH);
+
+        JPanel westPanel = new JPanel(new GridLayout(1, 1)); // левый панель с деревом
+        westPanel.add(new JScrollPane(new TestFrame().testTreeOnPanel()));
+        mainPanel.add(westPanel,BorderLayout.WEST);
+
+        JPanel eastPanel = new JPanel(); // правый панель с JTextArea
+        JTextArea testArea = new JTextArea();
+        testArea.setPreferredSize(new Dimension(500,300));
+        eastPanel.add(testArea);
+        mainPanel.add(eastPanel, BorderLayout.EAST);
+
+        frame.setContentPane(mainPanel);
         frame.pack();
+        frame.setBackground(Color.black);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-
     }
 
     private TreeModel createTreeModel() {
