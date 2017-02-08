@@ -5,6 +5,7 @@ import javax.swing.event.*;
 import javax.swing.tree.*;
 
 public class CheckBoxStatusUpdateListener implements TreeModelListener {
+    public static ArrayList<String> ololotest = new ArrayList<String>();
     private boolean adjusting;
     @Override public void treeNodesChanged(TreeModelEvent e) {
         if (adjusting) {
@@ -38,6 +39,7 @@ public class CheckBoxStatusUpdateListener implements TreeModelListener {
         model.nodeChanged(node);
         adjusting = false;
     }
+
     private void updateParentUserObject(DefaultMutableTreeNode parent) {
         int selectedCount = 0;
         Enumeration<?> children = parent.children();
@@ -61,6 +63,7 @@ public class CheckBoxStatusUpdateListener implements TreeModelListener {
             parent.setUserObject(new CheckBoxNode(label));
         }
     }
+
     private void updateAllChildrenUserObject(DefaultMutableTreeNode root, Status status) {
         Enumeration<?> breadth = root.breadthFirstEnumeration();
         while (breadth.hasMoreElements()) { // Делает Checked всех детей, если чекнуть родителя
@@ -70,8 +73,19 @@ public class CheckBoxStatusUpdateListener implements TreeModelListener {
             }
             CheckBoxNode check = (CheckBoxNode) node.getUserObject();
             node.setUserObject(new CheckBoxNode(check.label, status));
+            if (!node.getAllowsChildren()) { // заполняем и ументшаем arraylist
+                if (status.equals(Status.SELECTED)) {
+                    ololotest.add(node.toString());
+                } else {
+                    ololotest.remove(ololotest.indexOf(node.toString()));
+                }
+            }
+        }
+        for (int i = 0; i < ololotest.size(); i++) {
+            System.out.println(ololotest.get(i)); // выводим содержимое arrayлиста
         }
     }
+
     @Override public void treeNodesInserted(TreeModelEvent e)    { /* not needed */ }
     @Override public void treeNodesRemoved(TreeModelEvent e)     { /* not needed */ }
     @Override public void treeStructureChanged(TreeModelEvent e) { /* not needed */ }
