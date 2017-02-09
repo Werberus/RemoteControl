@@ -25,7 +25,7 @@ public class Encryp {
         byte ba[] = new byte[8];
         int n;
         //String key="sachkalox";
-        fileName = "C://123/a.txt";
+       
         //Определяем файл
         File file = new File(fileName); // путь C://123/a.txt
         try {
